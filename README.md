@@ -1,1 +1,1 @@
-# gayemce-TatilBudurDB
+TatilBudur Database Design
