@@ -1,0 +1,490 @@
+USE [master]
+GO
+/****** Object:  Database [TatilBudurDb]    Script Date: 20.08.2023 10:15:44 ******/
+CREATE DATABASE [TatilBudurDb]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'TatilBudurDb', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\TatilBudurDb.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'TatilBudurDb_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\TatilBudurDb_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [TatilBudurDb] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [TatilBudurDb].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [TatilBudurDb] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [TatilBudurDb] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [TatilBudurDb] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [TatilBudurDb] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [TatilBudurDb] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [TatilBudurDb] SET  MULTI_USER 
+GO
+ALTER DATABASE [TatilBudurDb] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [TatilBudurDb] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [TatilBudurDb] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [TatilBudurDb] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [TatilBudurDb] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [TatilBudurDb] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [TatilBudurDb] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [TatilBudurDb] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [TatilBudurDb]
+GO
+/****** Object:  Table [dbo].[Addresses]    Script Date: 20.08.2023 10:15:44 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Addresses](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[City] [varchar](150) NOT NULL,
+	[Town] [varchar](150) NOT NULL,
+	[Village] [varchar](150) NULL,
+	[Street] [varchar](150) NOT NULL,
+	[Content] [varchar](250) NOT NULL,
+	[GoogleMapsLocation] [varchar](max) NOT NULL,
+	[PhoneNumber1] [varchar](50) NULL,
+	[PhoneNumber2] [varchar](50) NULL,
+	[PhoneNumber3] [varchar](50) NULL,
+	[Email] [varchar](50) NULL,
+	[HotelId] [int] NOT NULL,
+ CONSTRAINT [PK_Addresses] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Categories]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Categories](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](150) NOT NULL,
+	[IsActive] [bit] NOT NULL,
+	[MainCategoryId] [int] NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_Categories] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UK_NameMainCategoryId] UNIQUE NONCLUSTERED 
+(
+	[MainCategoryId] ASC,
+	[Name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[HotelCategories]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[HotelCategories](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[HotelId] [int] NOT NULL,
+	[CategoryId] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_HotelCategories] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UK_HotelIdCategoryId] UNIQUE NONCLUSTERED 
+(
+	[HotelId] ASC,
+	[CategoryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[HotelImages]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[HotelImages](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Url] [varchar](max) NULL,
+	[Image] [varbinary](max) NULL,
+	[HotelId] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_HotelImages] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Hotels]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Hotels](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](250) NOT NULL,
+	[Rating] [decimal](4, 2) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_Hotels] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[HotelSpecifications]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[HotelSpecifications](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[SpecificationId] [int] NOT NULL,
+	[HotelId] [int] NOT NULL,
+	[Description] [varchar](100) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_Id] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UK_HotelIdSpecificationId] UNIQUE NONCLUSTERED 
+(
+	[HotelId] ASC,
+	[SpecificationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[HotelTags]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[HotelTags](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[HotelId] [int] NOT NULL,
+	[TagId] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_HotelTags] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UK_HotelIdTagId] UNIQUE NONCLUSTERED 
+(
+	[HotelId] ASC,
+	[TagId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[HotelVideos]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[HotelVideos](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Url] [varchar](max) NULL,
+	[Video] [varbinary](max) NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+	[HotelId] [int] NOT NULL,
+ CONSTRAINT [PK_HotelVideos] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Reservations]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Reservations](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RoomId] [int] NOT NULL,
+	[Date] [date] NOT NULL,
+	[Name] [varchar](250) NOT NULL,
+	[AdultCounts] [int] NOT NULL,
+	[KidCounts] [int] NOT NULL,
+	[IsPaymentConfirm] [bit] NOT NULL,
+	[IsHere] [bit] NOT NULL,
+	[PaymentDate] [datetime] NULL,
+	[Description] [varchar](350) NULL,
+	[Price] [money] NOT NULL,
+ CONSTRAINT [PK_Reservations] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UK_RoomIdDate] UNIQUE NONCLUSTERED 
+(
+	[RoomId] ASC,
+	[Date] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RoomImages]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RoomImages](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RoomId] [int] NOT NULL,
+	[Url] [varchar](max) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_RoomImages] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Rooms]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Rooms](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](150) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+	[Description] [varchar](250) NULL,
+	[AdultCounts] [int] NOT NULL,
+	[KidCounts] [int] NOT NULL,
+	[HotelId] [int] NOT NULL,
+ CONSTRAINT [PK_Rooms] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RoomTags]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RoomTags](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RoomId] [int] NOT NULL,
+	[TagId] [int] NOT NULL,
+	[AdultPrice] [money] NOT NULL,
+	[KidPrice] [money] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_RoomTags] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UK_RoomIdTagId] UNIQUE NONCLUSTERED 
+(
+	[RoomId] ASC,
+	[TagId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RoomVideos]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RoomVideos](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RoomId] [int] NOT NULL,
+	[Url] [varchar](max) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_RoomVideos] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Specifications]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Specifications](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](150) NOT NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_Specifications] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Tags]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Tags](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](250) NOT NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+ CONSTRAINT [PK_Tags] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Addresses]  WITH CHECK ADD  CONSTRAINT [FK_Addresses_Hotels] FOREIGN KEY([HotelId])
+REFERENCES [dbo].[Hotels] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Addresses] CHECK CONSTRAINT [FK_Addresses_Hotels]
+GO
+ALTER TABLE [dbo].[Categories]  WITH CHECK ADD  CONSTRAINT [FK_Categories_Categories] FOREIGN KEY([MainCategoryId])
+REFERENCES [dbo].[Categories] ([Id])
+GO
+ALTER TABLE [dbo].[Categories] CHECK CONSTRAINT [FK_Categories_Categories]
+GO
+ALTER TABLE [dbo].[HotelCategories]  WITH CHECK ADD  CONSTRAINT [FK_HotelCategories_Categories] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Categories] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[HotelCategories] CHECK CONSTRAINT [FK_HotelCategories_Categories]
+GO
+ALTER TABLE [dbo].[HotelCategories]  WITH CHECK ADD  CONSTRAINT [FK_HotelCategories_Hotels] FOREIGN KEY([HotelId])
+REFERENCES [dbo].[Hotels] ([Id])
+GO
+ALTER TABLE [dbo].[HotelCategories] CHECK CONSTRAINT [FK_HotelCategories_Hotels]
+GO
+ALTER TABLE [dbo].[HotelImages]  WITH CHECK ADD  CONSTRAINT [FK_HotelImages_Hotels] FOREIGN KEY([HotelId])
+REFERENCES [dbo].[Hotels] ([Id])
+GO
+ALTER TABLE [dbo].[HotelImages] CHECK CONSTRAINT [FK_HotelImages_Hotels]
+GO
+ALTER TABLE [dbo].[HotelSpecifications]  WITH CHECK ADD  CONSTRAINT [FK_HotelSpecifications_Hotels] FOREIGN KEY([HotelId])
+REFERENCES [dbo].[Hotels] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[HotelSpecifications] CHECK CONSTRAINT [FK_HotelSpecifications_Hotels]
+GO
+ALTER TABLE [dbo].[HotelSpecifications]  WITH CHECK ADD  CONSTRAINT [FK_HotelSpecifications_Specifications] FOREIGN KEY([SpecificationId])
+REFERENCES [dbo].[Specifications] ([Id])
+GO
+ALTER TABLE [dbo].[HotelSpecifications] CHECK CONSTRAINT [FK_HotelSpecifications_Specifications]
+GO
+ALTER TABLE [dbo].[HotelTags]  WITH CHECK ADD  CONSTRAINT [FK_HotelTags_Hotels] FOREIGN KEY([HotelId])
+REFERENCES [dbo].[Hotels] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[HotelTags] CHECK CONSTRAINT [FK_HotelTags_Hotels]
+GO
+ALTER TABLE [dbo].[HotelTags]  WITH CHECK ADD  CONSTRAINT [FK_HotelTags_Tags] FOREIGN KEY([TagId])
+REFERENCES [dbo].[Tags] ([Id])
+GO
+ALTER TABLE [dbo].[HotelTags] CHECK CONSTRAINT [FK_HotelTags_Tags]
+GO
+ALTER TABLE [dbo].[HotelVideos]  WITH CHECK ADD  CONSTRAINT [FK_HotelVideos_Hotels] FOREIGN KEY([HotelId])
+REFERENCES [dbo].[Hotels] ([Id])
+GO
+ALTER TABLE [dbo].[HotelVideos] CHECK CONSTRAINT [FK_HotelVideos_Hotels]
+GO
+ALTER TABLE [dbo].[Reservations]  WITH CHECK ADD  CONSTRAINT [FK_Reservations_Rooms] FOREIGN KEY([RoomId])
+REFERENCES [dbo].[Rooms] ([Id])
+GO
+ALTER TABLE [dbo].[Reservations] CHECK CONSTRAINT [FK_Reservations_Rooms]
+GO
+ALTER TABLE [dbo].[RoomImages]  WITH CHECK ADD  CONSTRAINT [FK_RoomImages_Rooms] FOREIGN KEY([RoomId])
+REFERENCES [dbo].[Rooms] ([Id])
+GO
+ALTER TABLE [dbo].[RoomImages] CHECK CONSTRAINT [FK_RoomImages_Rooms]
+GO
+ALTER TABLE [dbo].[Rooms]  WITH CHECK ADD  CONSTRAINT [FK_Rooms_Hotels] FOREIGN KEY([HotelId])
+REFERENCES [dbo].[Hotels] ([Id])
+GO
+ALTER TABLE [dbo].[Rooms] CHECK CONSTRAINT [FK_Rooms_Hotels]
+GO
+ALTER TABLE [dbo].[RoomTags]  WITH CHECK ADD  CONSTRAINT [FK_RoomTags_Rooms] FOREIGN KEY([RoomId])
+REFERENCES [dbo].[Rooms] ([Id])
+GO
+ALTER TABLE [dbo].[RoomTags] CHECK CONSTRAINT [FK_RoomTags_Rooms]
+GO
+ALTER TABLE [dbo].[RoomTags]  WITH CHECK ADD  CONSTRAINT [FK_RoomTags_Tags] FOREIGN KEY([TagId])
+REFERENCES [dbo].[Tags] ([Id])
+GO
+ALTER TABLE [dbo].[RoomTags] CHECK CONSTRAINT [FK_RoomTags_Tags]
+GO
+ALTER TABLE [dbo].[RoomVideos]  WITH CHECK ADD  CONSTRAINT [FK_RoomVideos_Rooms] FOREIGN KEY([RoomId])
+REFERENCES [dbo].[Rooms] ([Id])
+GO
+ALTER TABLE [dbo].[RoomVideos] CHECK CONSTRAINT [FK_RoomVideos_Rooms]
+GO
+/****** Object:  StoredProcedure [dbo].[CreateCategory]    Script Date: 20.08.2023 10:15:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create PROCEDURE [dbo].[CreateCategory] @name varchar(150),@isActive bit, @mainCategoryId int
+as
+begin
+insert into Categories Values(@name,@isActive,@mainCategoryId,GETDATE(),null)
+End
+GO
+USE [master]
+GO
+ALTER DATABASE [TatilBudurDb] SET  READ_WRITE 
+GO
