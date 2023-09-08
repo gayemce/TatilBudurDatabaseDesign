@@ -21,3 +21,14 @@ TatilBudurDb veritabanı, aşağıdaki 15 tabloyu içerir:
 13. **RoomVideos**: Odaların video içeriklerini tutar.
 14. **Specifications**: Otellerin ve odaların sahip olduğu özellikleri temsil eder.
 15. **Tags**: Etiketleri temsil eder.
+
+## Veritabanının Amaçları
+
+TatilBudurDb veritabanı, aşağıdaki amaçları desteklemek üzere tasarlanmıştır:
+
+- Otellerin temel bilgilerini depolamak ve yönetmek.
+- Otel kategorilerini oluşturmak, yönetmek ve ilişkilendirmek.
+- Otellerin ve odaların özelliklerini ve açıklamalarını kaydetmek.
+- Etiketleri oluşturmak ve otellerle, odalarla ilişkilendirmek.
+- Odaların görsel ve video içeriklerini yönetmek.
+- Oda rezervasyonlarını takip etmek ve yönetmek.
