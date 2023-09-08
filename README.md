@@ -32,3 +32,9 @@ TatilBudurDb veritabanı, aşağıdaki amaçları desteklemek üzere tasarlanmı
 - Etiketleri oluşturmak ve otellerle, odalarla ilişkilendirmek.
 - Odaların görsel ve video içeriklerini yönetmek.
 - Oda rezervasyonlarını takip etmek ve yönetmek.
+
+## Veritabanı Diyagramı
+
+Veritabanının yapısını daha iyi anlamak için aşağıdaki diyagrama göz atabilirsiniz:
+
+![Tatil Budur Database Diagram](TatilBudurDB.gif)
