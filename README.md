@@ -37,4 +37,4 @@ TatilBudurDb veritabanı, aşağıdaki amaçları desteklemek üzere tasarlanmı
 
 Veritabanının yapısını daha iyi anlamak için aşağıdaki diyagrama göz atabilirsiniz:
 
-![Tatil Budur Database Diagram](TatilBudurDB.gif)
+![Tatil Budur Database Diagram](TatilBudurDb.png)
